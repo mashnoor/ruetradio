@@ -1,18 +1,25 @@
-package com.ruetradio.android;
+package com.radioruet.android.activities;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.radioruet.android.utils.Sidebar;
+import com.ruetradio.android.R;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends Activity {
 
-    Button listenButton;
+    @BindView(R.id.btnListen)
+    BootstrapButton listenButton;
     private MediaPlayer player;
     private ProgressBar progressBar;
 
@@ -20,7 +27,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listenButton = (Button) findViewById(R.id.btnListen);
+        ButterKnife.bind(this);
+        Sidebar.showSidebar(this);
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setMax(100);
         listenButton.setOnClickListener(new View.OnClickListener() {
