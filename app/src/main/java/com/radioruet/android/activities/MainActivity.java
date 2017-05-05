@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     @BindView(R.id.btnListen)
     BootstrapButton listenButton;
     private MediaPlayer player;
-    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,7 @@ public class MainActivity extends Activity {
         ButterKnife.bind(this);
         Sidebar.showSidebar(this);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setMax(100);
+
         listenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,13 +56,7 @@ public class MainActivity extends Activity {
                         e.printStackTrace();
                     }
 
-                    player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
 
-                        public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                            progressBar.setSecondaryProgress(percent);
-                            Log.i("Buffering", "" + percent);
-                        }
-                    });
                     player.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                         @Override
                         public boolean onInfo(MediaPlayer mp, int what, int extra) {
@@ -95,7 +88,7 @@ public class MainActivity extends Activity {
 
                     listenButton.setText("Listen");
 
-                    progressBar.setVisibility(View.INVISIBLE);
+
 
                 }
 
