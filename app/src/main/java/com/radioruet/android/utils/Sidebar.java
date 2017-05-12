@@ -9,6 +9,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.radioruet.android.activities.SMSActivity;
+import com.radioruet.android.activities.SecretMessage;
 
 /**
  * Created by Mashnoor on 5/6/17.
@@ -19,10 +20,7 @@ public class Sidebar {
     {
         PrimaryDrawerItem listen = new PrimaryDrawerItem().withName("Listen Live");
         PrimaryDrawerItem archive = new PrimaryDrawerItem().withName("Archive");
-        PrimaryDrawerItem sms = new PrimaryDrawerItem().withName("SMS and Call");
-        PrimaryDrawerItem schedules = new PrimaryDrawerItem().withName("Schedule");
-        PrimaryDrawerItem call = new PrimaryDrawerItem().withName("Call US!");
-        PrimaryDrawerItem like = new PrimaryDrawerItem().withName("Like on FB");
+        PrimaryDrawerItem schedule = new PrimaryDrawerItem().withName("Schedule");
         PrimaryDrawerItem about = new PrimaryDrawerItem().withName("About Us");
         PrimaryDrawerItem exit = new PrimaryDrawerItem().withName("Exit");
 
@@ -33,10 +31,6 @@ public class Sidebar {
                 .addDrawerItems(
                         listen,
                         archive,
-                        sms,
-                        schedules,
-                        call,
-                        like,
                         about,
                         exit
                 )
@@ -46,8 +40,12 @@ public class Sidebar {
                         switch (position)
                         {
                             case 2:
-                                Intent i = new Intent(activity, SMSActivity.class);
-                                activity.startActivity(i);
+                                Intent smsactivity = new Intent(activity, SMSActivity.class);
+                                activity.startActivity(smsactivity);
+                                break;
+                            case 3:
+                                Intent scrtmsg = new Intent(activity, SecretMessage.class);
+                                activity.startActivity(scrtmsg);
 
                         }
 

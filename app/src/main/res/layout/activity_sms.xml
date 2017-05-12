@@ -30,14 +30,15 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Name:"/>
+
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/txtName"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            app:bootstrapSize="md"
-            app:roundedCorners="true"
+            android:layout_weight="2"
             app:bootstrapBrand="info"
-            />
+            app:bootstrapSize="md"
+            app:roundedCorners="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,14 +52,15 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Department:"/>
+
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/txtDepartment"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            app:bootstrapSize="md"
-            app:roundedCorners="true"
+            android:layout_weight="2"
             app:bootstrapBrand="info"
-            />
+            app:bootstrapSize="md"
+            app:roundedCorners="true" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,14 +73,15 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Series:"/>
+
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/txtSeries"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            app:bootstrapSize="md"
-            app:roundedCorners="true"
+            android:layout_weight="2"
             app:bootstrapBrand="info"
-            />
+            app:bootstrapSize="md"
+            app:roundedCorners="true" />
     </LinearLayout>
 
         <TextView
@@ -89,23 +92,23 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/txtMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="5"
         android:inputType="textMultiLine" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send"
         android:layout_gravity="center"
+        android:text="Send"
         app:bootstrapBrand="primary"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
-        app:showOutline="false"
         app:roundedCorners="true"
-        />
+        app:showOutline="false" />
 
 
 </LinearLayout>
