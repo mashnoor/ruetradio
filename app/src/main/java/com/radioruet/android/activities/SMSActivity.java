@@ -2,27 +2,26 @@ package com.radioruet.android.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.radioruet.android.utils.Constants;
-import com.ruetradio.android.R;
+import com.radioruet.android.R;
 
-import butterknife.BindBitmap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
 public class SMSActivity extends Activity {
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @BindView(R.id.txtName)
     BootstrapEditText txtname;
@@ -37,9 +36,12 @@ public class SMSActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Sending Online Message...");
+        progressDialog.setMessage("Sending Online Message");
+
+
     }
     @OnClick(R.id.btnSend)
     void sendDataToServer()

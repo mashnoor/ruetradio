@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.radioruet.android.utils.Constants;
-import com.ruetradio.android.R;
+import com.radioruet.android.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +21,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class SecretMessage extends Activity {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     @BindView(R.id.txtMessage)
     EditText txtMessage;
 
@@ -30,6 +31,7 @@ public class SecretMessage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_secret_message);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Sending Secret Message...");

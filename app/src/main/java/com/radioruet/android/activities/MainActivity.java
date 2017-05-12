@@ -13,8 +13,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.radioruet.android.utils.Sidebar;
-import com.ruetradio.android.R;
+import com.radioruet.android.R;
 import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,18 +27,24 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
+
+
 @RuntimePermissions
 public class MainActivity extends Activity {
 
     @BindView(R.id.btnListen)
     BootstrapButton listenButton;
-    private MediaPlayer player;
+    private ExoPlayer player;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         ButterKnife.bind(this);
         Sidebar.showSidebar(this);
 

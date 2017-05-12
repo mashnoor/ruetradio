@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.radioruet.android"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -40,4 +40,11 @@ dependencies {
         exclude module: "support-v13"
     }
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+    compile 'com.google.firebase:firebase-core:10.2.4'                        // this line must be included to integrate with Firebase
+    compile 'com.google.firebase:firebase-messaging:10.2.4'
+
+    compile 'com.google.firebase:firebase-crash:10.2.4'
+    compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
+    compile 'com.github.wseemann:FFmpegMediaPlayer:1.0.4'
 }
+apply plugin: 'com.google.gms.google-services'
