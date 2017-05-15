@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
-
+import wseemann.media.FFmpegMediaPlayer;
 
 
 @RuntimePermissions
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 
     @BindView(R.id.btnListen)
     BootstrapButton listenButton;
-    private ExoPlayer player;
+    private FFmpegMediaPlayer player;
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -57,13 +57,13 @@ public class MainActivity extends Activity {
                     listenButton.setText("Connecting...");
                     listenButton.setEnabled(false);
 
-                    player = new MediaPlayer();
+                    player = new FFmpegMediaPlayer();
                     try {
                         player.setDataSource("http://104.131.22.246:8000/");
                         player.prepareAsync();
-                        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        player.setOnPreparedListener(new FFmpegMediaPlayer.OnPreparedListener() {
                             @Override
-                            public void onPrepared(MediaPlayer mp) {
+                            public void onPrepared(FFmpegMediaPlayer mp) {
                                 listenButton.setText("Stop");
                                 listenButton.setEnabled(true);
                                 mp.start();
@@ -74,16 +74,16 @@ public class MainActivity extends Activity {
                     }
 
 
-                    player.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    player.setOnInfoListener(new FFmpegMediaPlayer.OnInfoListener() {
                         @Override
-                        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        public boolean onInfo(FFmpegMediaPlayer mp, int what, int extra) {
                             switch(what)
                             {
-                                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                                case FFmpegMediaPlayer.MEDIA_INFO_BUFFERING_START:
                                     listenButton.setEnabled(false);
                                     listenButton.setText("Buffering...");
                                     break;
-                                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                                case FFmpegMediaPlayer.MEDIA_INFO_BUFFERING_END:
                                     listenButton.setEnabled(true);
                                     listenButton.setText("Stop");
                                     break;
