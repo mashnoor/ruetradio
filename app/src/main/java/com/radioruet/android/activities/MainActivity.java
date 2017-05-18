@@ -17,6 +17,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
+import com.loopj.android.http.AsyncHttpClient;
 import com.radioruet.android.utils.Sidebar;
 import com.radioruet.android.R;
 import java.io.IOException;
@@ -36,30 +37,25 @@ public class MainActivity extends Activity {
     BootstrapButton listenButton;
     private FFmpegMediaPlayer player;
     private FirebaseAnalytics mFirebaseAnalytics;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         ButterKnife.bind(this);
         Sidebar.showSidebar(this);
+        AsyncHttpClient client = new AsyncHttpClient();
 
         listenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(listenButton.getText().toString().equals("Listen"))
                 {
                     listenButton.setText("Connecting...");
                     listenButton.setEnabled(false);
-
                     player = new FFmpegMediaPlayer();
                     try {
-                        player.setDataSource("http://104.131.22.246:8000/");
+                        player.setDataSource("http://172.104.54.52:8000/");
                         player.prepareAsync();
                         player.setOnPreparedListener(new FFmpegMediaPlayer.OnPreparedListener() {
                             @Override
@@ -70,9 +66,8 @@ public class MainActivity extends Activity {
                             }
                         });
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, "Can't connect to server.", Toast.LENGTH_LONG).show();
                     }
-
 
                     player.setOnInfoListener(new FFmpegMediaPlayer.OnInfoListener() {
                         @Override
@@ -107,7 +102,6 @@ public class MainActivity extends Activity {
 
             }
         });
-
     }
 
     @OnClick(R.id.btnMessage)
@@ -150,13 +144,10 @@ public class MainActivity extends Activity {
         }
     }
 
-
     @OnClick(R.id.btnCall)
     void makeCall()
     {
-
         MainActivityPermissionsDispatcher.callWithCheck(this);
-
     }
 
     @OnPermissionDenied(Manifest.permission.CALL_PHONE)
