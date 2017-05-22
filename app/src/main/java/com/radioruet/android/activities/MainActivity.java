@@ -10,24 +10,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mikepenz.materialdrawer.Drawer;
 import com.radioruet.android.R;
 import com.radioruet.android.utils.ConnectionChecker;
 import com.radioruet.android.utils.Constants;
 import com.radioruet.android.utils.Sidebar;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 import hybridmediaplayer.HybridMediaPlayer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
-import wseemann.media.FFmpegMediaPlayer;
 
 
 @RuntimePermissions
@@ -35,6 +36,8 @@ public class MainActivity extends Activity {
 
     @BindView(R.id.btnListen)
     BootstrapButton listenButton;
+    @BindView(R.id.txtShowName)
+    AwesomeTextView txtShowName;
     private HybridMediaPlayer player;
     private FirebaseAnalytics mFirebaseAnalytics;
     AsyncHttpClient client;
@@ -43,25 +46,35 @@ public class MainActivity extends Activity {
     private static final String TXT_BUFFERING = "Buffering...";
     private static final String TXT_STOP = "Stop";
     private static final String TXT_CONNECTING = "Connecting...";
+    Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-
         ButterKnife.bind(this);
-        Sidebar.showSidebar(this);
+        drawer = Sidebar.showSidebar(this);
         client = new AsyncHttpClient();
-        final String TAG = "--------";
+        retriveShowName();
 
+    }
 
+    private void retriveShowName() {
+        client.get(Constants.GET_SHOW_NAME, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                txtShowName.setText(new String(responseBody));
 
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showToast("Couldn't connect to server");
 
-
-
+            }
+        });
     }
 
     private void showToast(String msg) {
@@ -72,7 +85,7 @@ public class MainActivity extends Activity {
     @OnClick(R.id.btnListen)
     void lisentHandler() {
         //Check if the media player is playing. If playing, then release it
-        if (player!=null) {
+        if (player != null) {
             player.release();
             player = null;
 
@@ -104,21 +117,29 @@ public class MainActivity extends Activity {
                 listenButton.setText(TXT_STOP);
             }
         });
+        player.setOnErrorListener(new HybridMediaPlayer.OnErrorListener() {
+            @Override
+            public void onError(Exception e, HybridMediaPlayer hybridMediaPlayer) {
+                showToast("Can't reach streaming server");
+                listenButton.setEnabled(true);
+                listenButton.setText(TXT_LISTEN);
+            }
+        });
 
 
+    }
 
-
-
-
-
+    @OnClick(R.id.imgMenu)
+    void showMenu()
+    {
+        drawer.openDrawer();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(player!=null && player.isPlaying())
-        {
+        if (player != null && player.isPlaying()) {
             listenButton.setText(TXT_STOP);
         }
     }

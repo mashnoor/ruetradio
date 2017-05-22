@@ -29,25 +29,27 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.beardedhen:androidbootstrap:2.3.1'
-    compile 'com.loopj.android:android-async-http:1.4.9'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile('com.github.hotchemi:permissionsdispatcher:2.4.0') {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
-    compile 'com.google.firebase:firebase-core:10.2.4'                        // this line must be included to integrate with Firebase
-    compile 'com.google.firebase:firebase-messaging:10.2.4'
+    // this line must be included to integrate with Firebase
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.beardedhen:androidbootstrap:2.3.1'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.google.firebase:firebase-core:10.2.4'
+    compile 'com.google.firebase:firebase-messaging:10.2.4'
     compile 'com.google.firebase:firebase-crash:10.2.4'
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
     compile 'com.github.wseemann:FFmpegMediaPlayer:1.0.4'
     compile 'com.github.mkaflowski:HybridMediaPlayer:1.2.5'
+    compile 'com.android.support:support-v4:25.3.1'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
 }
 apply plugin: 'com.google.gms.google-services'
 

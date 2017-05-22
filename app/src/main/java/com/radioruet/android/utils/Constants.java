@@ -9,4 +9,5 @@ public class Constants {
     public static final String SET_ONLINE_MSG = BASE_URL + "setonlinemsg";
     public static final String SET_SECRET_MSG = BASE_URL + "setsecretmsg";
     public static final String STREAMING_SOURCE = "http://172.104.54.52:8000";
+    public static final String GET_SHOW_NAME = BASE_URL + "getshowname";
 }
