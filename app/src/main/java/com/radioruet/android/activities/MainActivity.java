@@ -5,25 +5,25 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
-
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.loopj.android.http.AsyncHttpClient;
-import com.radioruet.android.utils.Sidebar;
 import com.radioruet.android.R;
+import com.radioruet.android.utils.ConnectionChecker;
+import com.radioruet.android.utils.Constants;
+import com.radioruet.android.utils.Sidebar;
+
 import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hybridmediaplayer.HybridMediaPlayer;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
@@ -35,78 +35,96 @@ public class MainActivity extends Activity {
 
     @BindView(R.id.btnListen)
     BootstrapButton listenButton;
-    private FFmpegMediaPlayer player;
+    private HybridMediaPlayer player;
     private FirebaseAnalytics mFirebaseAnalytics;
+    AsyncHttpClient client;
+    private static final String TXT_LISTEN = "Listen";
+    private static final String TXT_PLAYING = "Playing";
+    private static final String TXT_BUFFERING = "Buffering...";
+    private static final String TXT_STOP = "Stop";
+    private static final String TXT_CONNECTING = "Connecting...";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+
         ButterKnife.bind(this);
         Sidebar.showSidebar(this);
-        AsyncHttpClient client = new AsyncHttpClient();
+        client = new AsyncHttpClient();
+        final String TAG = "--------";
 
-        listenButton.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+
+    @OnClick(R.id.btnListen)
+    void lisentHandler() {
+        //Check if the media player is playing. If playing, then release it
+        if (player!=null) {
+            player.release();
+            player = null;
+
+
+            listenButton.setText(TXT_LISTEN);
+
+            showToast("Streaming stopped");
+            return;
+        }
+        //First Check if connected to the internt
+        if (!ConnectionChecker.haveNetworkConnection(MainActivity.this)) {
+            showToast("Can't connect to the server");
+            return;
+        }
+        //Check if the show is on air
+        //To-Do
+
+        //Play the radio
+        player = HybridMediaPlayer.getInstance(MainActivity.this);
+        player.setDataSource(Constants.STREAMING_SOURCE);
+        player.prepare();
+        listenButton.setText(TXT_CONNECTING);
+        listenButton.setEnabled(false);
+        player.setOnPreparedListener(new HybridMediaPlayer.OnPreparedListener() {
             @Override
-            public void onClick(View v) {
-                if(listenButton.getText().toString().equals("Listen"))
-                {
-                    listenButton.setText("Connecting...");
-                    listenButton.setEnabled(false);
-                    player = new FFmpegMediaPlayer();
-                    try {
-                        player.setDataSource("http://172.104.54.52:8000/");
-                        player.prepareAsync();
-                        player.setOnPreparedListener(new FFmpegMediaPlayer.OnPreparedListener() {
-                            @Override
-                            public void onPrepared(FFmpegMediaPlayer mp) {
-                                listenButton.setText("Stop");
-                                listenButton.setEnabled(true);
-                                mp.start();
-                            }
-                        });
-                    } catch (IOException e) {
-                        Toast.makeText(MainActivity.this, "Can't connect to server.", Toast.LENGTH_LONG).show();
-                    }
-
-                    player.setOnInfoListener(new FFmpegMediaPlayer.OnInfoListener() {
-                        @Override
-                        public boolean onInfo(FFmpegMediaPlayer mp, int what, int extra) {
-                            switch(what)
-                            {
-                                case FFmpegMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                                    listenButton.setEnabled(false);
-                                    listenButton.setText("Buffering...");
-                                    break;
-                                case FFmpegMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                                    listenButton.setEnabled(true);
-                                    listenButton.setText("Stop");
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-
-                }
-                else
-                {
-                    if (player.isPlaying()) {
-                        player.stop();
-                        player.release();
-
-                    }
-                    listenButton.setText("Listen");
-
-                }
-
-
+            public void onPrepared(HybridMediaPlayer hybridMediaPlayer) {
+                player.play();
+                listenButton.setEnabled(true);
+                listenButton.setText(TXT_STOP);
             }
         });
+
+
+
+
+
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(player!=null && player.isPlaying())
+        {
+            listenButton.setText(TXT_STOP);
+        }
     }
 
     @OnClick(R.id.btnMessage)
-    void showMessageBox()
-    {
+    void showMessageBox() {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Send Message")
                 .setMessage("What type of message do you want to send?")
@@ -134,8 +152,7 @@ public class MainActivity extends Activity {
     }
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)
-    void call()
-    {
+    void call() {
         Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:01826636115"));
         try {
             startActivity(in);
@@ -145,8 +162,7 @@ public class MainActivity extends Activity {
     }
 
     @OnClick(R.id.btnCall)
-    void makeCall()
-    {
+    void makeCall() {
         MainActivityPermissionsDispatcher.callWithCheck(this);
     }
 

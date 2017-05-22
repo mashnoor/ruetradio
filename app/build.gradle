@@ -19,6 +19,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -46,5 +47,7 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:10.2.4'
     compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
     compile 'com.github.wseemann:FFmpegMediaPlayer:1.0.4'
+    compile 'com.github.mkaflowski:HybridMediaPlayer:1.2.5'
 }
 apply plugin: 'com.google.gms.google-services'
+
