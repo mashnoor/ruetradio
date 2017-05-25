@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.radioruet.android"
         minSdkVersion 16
@@ -11,9 +11,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file("/Users/menon/rrproject/radioruet.jks")
+            storePassword "radioruet123@"
+            keyAlias "Radio RUET"
+            keyPassword "radioruet123@"
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            useProguard true
+
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,8 +55,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.2.4'
     compile 'com.google.firebase:firebase-messaging:10.2.4'
     compile 'com.google.firebase:firebase-crash:10.2.4'
-    compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
-    compile 'com.github.wseemann:FFmpegMediaPlayer:1.0.4'
     compile 'com.github.mkaflowski:HybridMediaPlayer:1.2.5'
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'

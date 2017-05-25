@@ -12,6 +12,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.radioruet.android.utils.ConnectionChecker;
 import com.radioruet.android.utils.Constants;
 import com.radioruet.android.R;
 
@@ -43,9 +44,21 @@ public class SMSActivity extends Activity {
 
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     @OnClick(R.id.btnSend)
     void sendDataToServer()
     {
+        if(!ConnectionChecker.haveNetworkConnection(SMSActivity.this))
+        {
+            showToast("Couldn't connect to the server");
+            return;
+        }
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams datas = new RequestParams();
         datas.put("name", txtname.getText().toString());
@@ -66,7 +79,6 @@ public class SMSActivity extends Activity {
                 finish();
 
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.d("--------", new String(responseBody));
@@ -75,11 +87,9 @@ public class SMSActivity extends Activity {
 
             }
         });
-
     }
     private void showToast(String s)
     {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
-
 }

@@ -11,6 +11,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.radioruet.android.utils.ConnectionChecker;
 import com.radioruet.android.utils.Constants;
 import com.radioruet.android.R;
 
@@ -36,12 +37,17 @@ public class SecretMessage extends Activity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Sending Secret Message...");
     }
+
     @OnClick(R.id.btnSend)
-    void sendDataToServer()
-    {
-        AsyncHttpClient client = new AsyncHttpClient();
+    void sendDataToServer() {
+        if(!ConnectionChecker.haveNetworkConnection(SecretMessage.this))
+        {
+            showToast("Couldn't connect to the server");
+            return;
+        }
+        final AsyncHttpClient client = new AsyncHttpClient();
         RequestParams datas = new RequestParams();
-       datas.put("message", txtMessage.getText().toString());
+        datas.put("message", txtMessage.getText().toString());
         client.post(Constants.SET_SECRET_MSG, datas, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -50,24 +56,32 @@ public class SecretMessage extends Activity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d("--------", new String(responseBody));
+
                 progressDialog.dismiss();
                 showToast("Successfully sent secret message!");
                 finish();
 
             }
 
+
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("--------", new String(responseBody));
+
                 progressDialog.dismiss();
                 showToast("Something went wrong! Please try again later");
 
             }
         });
+
     }
-    private void showToast(String s)
-    {
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    private void showToast(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 }

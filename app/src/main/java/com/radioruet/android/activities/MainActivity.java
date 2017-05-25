@@ -3,10 +3,13 @@ package com.radioruet.android.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -46,6 +49,7 @@ public class MainActivity extends Activity {
     private static final String TXT_BUFFERING = "Buffering...";
     private static final String TXT_STOP = "Stop";
     private static final String TXT_CONNECTING = "Connecting...";
+    String showname = "None";
     Drawer drawer;
 
     @Override
@@ -62,10 +66,17 @@ public class MainActivity extends Activity {
     }
 
     private void retriveShowName() {
+
         client.get(Constants.GET_SHOW_NAME, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 txtShowName.setText(new String(responseBody));
+                showname = txtShowName.getText().toString();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        retriveShowName();
+                    }
+                }, 120000);
 
             }
 
@@ -75,6 +86,21 @@ public class MainActivity extends Activity {
 
             }
         });
+    }
+
+    @OnClick(R.id.btnFb)
+    public void openfb() {
+        startActivity(getOpenFacebookIntent(MainActivity.this));
+    }
+
+    public static Intent getOpenFacebookIntent(Context context) {
+
+        try {
+            context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+            return new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/948695318567007"));
+        } catch (Exception e) {
+            return new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/radioruet"));
+        }
     }
 
     private void showToast(String msg) {
@@ -100,8 +126,7 @@ public class MainActivity extends Activity {
             showToast("Can't connect to the server");
             return;
         }
-        //Check if the show is on air
-        //To-Do
+
 
         //Play the radio
         player = HybridMediaPlayer.getInstance(MainActivity.this);
@@ -115,12 +140,13 @@ public class MainActivity extends Activity {
                 player.play();
                 listenButton.setEnabled(true);
                 listenButton.setText(TXT_STOP);
+                showToast("Streaming Started!");
             }
         });
         player.setOnErrorListener(new HybridMediaPlayer.OnErrorListener() {
             @Override
             public void onError(Exception e, HybridMediaPlayer hybridMediaPlayer) {
-                showToast("Can't reach streaming server");
+                showToast("Couldn't reach streaming server");
                 listenButton.setEnabled(true);
                 listenButton.setText(TXT_LISTEN);
             }
@@ -130,8 +156,7 @@ public class MainActivity extends Activity {
     }
 
     @OnClick(R.id.imgMenu)
-    void showMenu()
-    {
+    void showMenu() {
         drawer.openDrawer();
 
     }
@@ -141,6 +166,8 @@ public class MainActivity extends Activity {
         super.onResume();
         if (player != null && player.isPlaying()) {
             listenButton.setText(TXT_STOP);
+        } else {
+            listenButton.setText(TXT_LISTEN);
         }
     }
 
@@ -174,7 +201,7 @@ public class MainActivity extends Activity {
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)
     void call() {
-        Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:01826636115"));
+        Intent in = new Intent(Intent.ACTION_CALL, Uri.parse("tel:+8801789597090"));
         try {
             startActivity(in);
         } catch (android.content.ActivityNotFoundException ex) {

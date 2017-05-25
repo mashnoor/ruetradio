@@ -16,7 +16,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleInstance"
-            android:theme="@style/MaterialDrawerTheme"/>
+            android:theme="@style/MaterialDrawerTheme" />
         <activity
             android:name=".activities.SMSActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
@@ -48,6 +48,9 @@
         </activity>
         <activity
             android:name=".activities.Schedule"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
+
+        <activity android:name=".activities.AboutActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
     </application>
 
