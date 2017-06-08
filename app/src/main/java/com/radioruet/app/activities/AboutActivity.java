@@ -1,9 +1,9 @@
-package com.radioruet.android.activities;
+package com.radioruet.app.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.radioruet.android.R;
+import com.radioruet.app.R;
 
 public class AboutActivity extends Activity {
 

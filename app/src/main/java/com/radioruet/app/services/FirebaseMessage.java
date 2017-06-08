@@ -1,20 +1,15 @@
-package com.radioruet.android.services;
+package com.radioruet.app.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.radioruet.android.R;
-import com.radioruet.android.activities.MainActivity;
+import com.radioruet.app.R;
+import com.radioruet.app.activities.MainActivity;
 
 public class FirebaseMessage extends FirebaseMessagingService {
     public FirebaseMessage() {

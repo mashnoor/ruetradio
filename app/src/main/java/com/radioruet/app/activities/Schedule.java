@@ -1,17 +1,16 @@
-package com.radioruet.android.activities;
+package com.radioruet.app.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.radioruet.android.R;
-import com.radioruet.android.utils.ConnectionChecker;
-import com.radioruet.android.utils.Constants;
+import com.radioruet.app.R;
+import com.radioruet.app.utils.ConnectionChecker;
+import com.radioruet.app.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

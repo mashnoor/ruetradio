@@ -1,4 +1,4 @@
-package com.radioruet.android;
+package com.radioruet.app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.radioruet.android;
+package com.radioruet.app;
 
 import org.junit.Test;
 

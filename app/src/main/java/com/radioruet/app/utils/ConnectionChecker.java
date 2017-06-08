@@ -1,4 +1,4 @@
-package com.radioruet.android.utils;
+package com.radioruet.app.utils;
 
 import android.app.Activity;
 import android.content.Context;

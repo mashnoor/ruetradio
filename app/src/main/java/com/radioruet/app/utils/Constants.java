@@ -1,4 +1,4 @@
-package com.radioruet.android.utils;
+package com.radioruet.app.utils;
 
 /**
  * Created by Mashnoor on 5/11/17.

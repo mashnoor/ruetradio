@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "884008666787",
-    "firebase_url": "https://radioruet-36815.firebaseio.com",
-    "project_id": "radioruet-36815",
-    "storage_bucket": "radioruet-36815.appspot.com"
+    "project_number": "487564280748",
+    "firebase_url": "https://radio-ruet-app.firebaseio.com",
+    "project_id": "radio-ruet-app",
+    "storage_bucket": "radio-ruet-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:884008666787:android:8c868225fc56666e",
+        "mobilesdk_app_id": "1:487564280748:android:982b539d39aed1e6",
         "android_client_info": {
-          "package_name": "com.radioruet.android"
+          "package_name": "com.radioruet.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "884008666787-ue7j59ca9ciqfmm1fh7jui2q74qcsl4b.apps.googleusercontent.com",
+          "client_id": "487564280748-fbvim2hm6lgfrvpti948d3ff8teovkk5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDanjvEDG2hgTxJze1R7N-dUdtAWC5GL0Y"
+          "current_key": "AIzaSyAkzReS-TxAlnljJqAsm-CljXrtPCpbvF0"
         }
       ],
       "services": {

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.radioruet.android">
+    package="com.radioruet.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+
 
     <application
-        android:name=".MyApp"
+        android:name="com.radioruet.app.MyApp"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -14,29 +17,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.radioruet.app.activities.MainActivity"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/MaterialDrawerTheme" />
         <activity
-            android:name=".activities.SMSActivity"
+            android:name="com.radioruet.app.activities.SMSActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
-            android:name=".activities.SecretMessage"
+            android:name="com.radioruet.app.activities.SecretMessage"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
-        <service android:name=".services.FirebaseMessage">
+        <service android:name="com.radioruet.app.services.FirebaseMessage">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.FirebaseIDService">
+        <service android:name="com.radioruet.app.services.FirebaseIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.radioruet.app.activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash"
             android:theme="@style/FullscreenTheme">
@@ -47,11 +53,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.Schedule"
+            android:name="com.radioruet.app.activities.Schedule"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
-        <activity android:name=".activities.AboutActivity"
+        <activity android:name="com.radioruet.app.activities.AboutActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
+        <receiver android:name="com.radioruet.app.utils.CallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

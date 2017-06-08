@@ -1,10 +1,10 @@
-package com.radioruet.android.utils;
+package com.radioruet.app.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
@@ -15,11 +15,9 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.radioruet.android.R;
-import com.radioruet.android.activities.AboutActivity;
-import com.radioruet.android.activities.SMSActivity;
-import com.radioruet.android.activities.Schedule;
-import com.radioruet.android.activities.SecretMessage;
+import com.radioruet.app.R;
+import com.radioruet.app.activities.AboutActivity;
+import com.radioruet.app.activities.Schedule;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -28,11 +26,18 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class Sidebar {
+
+    public void openPlayStore(Activity activity)
+    {
+
+    }
+
     public static Drawer showSidebar(final Activity activity) {
         PrimaryDrawerItem listen = new PrimaryDrawerItem().withName("Listen Live").withIcon(ContextCompat.getDrawable(activity, R.drawable.listenlive));
         PrimaryDrawerItem archive = new PrimaryDrawerItem().withName("Archive").withIcon(ContextCompat.getDrawable(activity, R.drawable.archive));
         PrimaryDrawerItem schedule = new PrimaryDrawerItem().withName("Schedule").withIcon(ContextCompat.getDrawable(activity, R.drawable.schedule));
         PrimaryDrawerItem about = new PrimaryDrawerItem().withName("About Us").withIcon(ContextCompat.getDrawable(activity, R.drawable.about));
+        PrimaryDrawerItem rate = new PrimaryDrawerItem().withName("Rate Us").withIcon(ContextCompat.getDrawable(activity, R.drawable.rate));
 
         PrimaryDrawerItem checkUpdate = new PrimaryDrawerItem().withName("Check for update").withIcon(ContextCompat.getDrawable(activity, R.drawable.update));
         return new DrawerBuilder()
@@ -43,6 +48,7 @@ public class Sidebar {
                         schedule,
                         archive,
                         about,
+                        rate,
                         checkUpdate
 
                 )
@@ -64,45 +70,28 @@ public class Sidebar {
                                 activity.startActivity(aboutActivity);
                                 break;
                             case 4:
-                                final ProgressDialog dialog = new ProgressDialog(activity);
-                                dialog.setMessage("Checking for update");
-                                if (!ConnectionChecker.haveNetworkConnection(activity)) {
-                                    Toast.makeText(activity, "Couldn't connect to server", Toast.LENGTH_LONG).show();
-                                } else {
-
-                                    AsyncHttpClient client = new AsyncHttpClient();
-                                    client.get(Constants.GET_LATEST_VERSION, new AsyncHttpResponseHandler() {
-                                        @Override
-                                        public void onStart() {
-                                            dialog.show();
-                                        }
-
-                                        @Override
-                                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                            String version = new String(responseBody);
-                                            if (version.equals(Constants.CURRENT_VERSION)) {
-                                                Toast.makeText(activity, "You are using the latest version", Toast.LENGTH_LONG).show();
-
-                                                dialog.dismiss();
-                                            } else {
-                                                new AlertDialog.Builder(activity).
-                                                        setTitle("Update Available!").
-                                                        setMessage("There is an update for Radio RUET App.\nDownload from www.radioruet.com").
-                                                        create().
-                                                        show();
-                                                dialog.dismiss();
-
-
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                            Toast.makeText(activity, "Couldn't connect to server", Toast.LENGTH_LONG).show();
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                final String appPackageName = activity.getPackageName();
+                                try {
+                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                    break;
                                 }
+                                catch (android.content.ActivityNotFoundException anfe) {
+                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                    break;
+                                }
+                            case 5:
+                                final String pname = activity.getPackageName();
+                                try {
+                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + pname)));
+                                    break;
+                                }
+                                catch (android.content.ActivityNotFoundException anfe) {
+                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + pname)));
+                                    break;
+                                }
+
+
+
 
                         }
 

@@ -1,14 +1,13 @@
-package com.radioruet.android.activities;
+package com.radioruet.app.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.radioruet.android.R;
+import com.radioruet.app.R;
 
 
 public class SplashActivity extends Activity {
