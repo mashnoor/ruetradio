@@ -19,7 +19,7 @@ public class CallReceiver extends PhonecallReceiver {
     {
         Logger.addLogAdapter(new AndroidLogAdapter());
         Logger.d("Calling");
-        if(MainActivity.player.isPlaying())
+        if(MainActivity.player!=null && MainActivity.player.isPlaying())
         {
             MainActivity.player.stopPlayback();
         }
@@ -41,7 +41,7 @@ public class CallReceiver extends PhonecallReceiver {
     @Override
     protected void onOutgoingCallStarted(Context ctx, String number, Date start)
     {
-        if(MainActivity.player.isPlaying())
+        if(MainActivity.player!= null && MainActivity.player.isPlaying())
         {
             MainActivity.player.stopPlayback();
         }
