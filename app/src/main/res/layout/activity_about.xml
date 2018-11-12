@@ -16,8 +16,8 @@
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
 
-        android:text="An Initiative By\n\nTeam Radio RUET\n\nWebsite: www.radioruet.com\n
-E-mail: radioruet@gmail.com\nPhone: +8801826636115\n\nPowered by পথিক "
+        android:text="An Initiative By\n\nTeam Radio RUET\n\nwww.radioruet.com\n
+radioruet@gmail.com\n\n"
         android:textSize="20sp" />
 
 

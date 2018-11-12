@@ -1,9 +1,12 @@
 package com.radioruet.app.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -24,27 +27,35 @@ public class FirebaseMessage extends FirebaseMessagingService {
         Log.d("----------", "From: " + remoteMessage.getFrom());
         Log.d("---------", "Notification Message Body: " + remoteMessage.getNotification().getBody());
 
+        String title = remoteMessage.getNotification().getTitle();
+        String body = remoteMessage.getNotification().getBody();
 
-        Intent intent = new Intent(this, MainActivity.class);
-// use System.currentTimeMillis() to have a unique ID for the pending intent
-        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-
-// build notification
-// the addAction re-use the same intent to keep the example short
-        Notification n  = new Notification.Builder(this)
-                .setContentTitle("Radio RUET")
-                .setContentText(remoteMessage.getNotification().getBody())
-                .setSmallIcon(R.drawable.logo)
-                .setContentIntent(pIntent)
-                .setAutoCancel(true).build();
+        showNotification(title, body);
 
 
+    }
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    public void showNotification(String title, String body) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, n);
+        int notificationId = 1;
+        String channelId = "channel-01";
+        String channelName = "RadioRUET";
 
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(body);
+
+
+        notificationManager.notify(notificationId, mBuilder.build());
     }
 }
